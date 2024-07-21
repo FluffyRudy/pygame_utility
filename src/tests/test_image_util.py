@@ -17,13 +17,22 @@ class TestImageUtil(unittest.TestCase):
         pygame.quit()
 
     def test_load_image(self):
-        # Assuming image_util.py has a function called load_image
         image_path = "./tests/test.png"
         image = image_util.load_image(image_path)
         self.assertIsNotNone(image, "Image loading failed, returned None")
         self.assertIsInstance(
             image, pygame.Surface, "Loaded image is not a Pygame Surface instance"
         )
+
+    def test_load_frames(self):
+        image_path = "./tests/"
+        frames = image_util.load_frames(image_path)
+        self.assertIsInstance(frames, list, "loaded container is not a list")
+
+        for frame in frames:
+            self.assertIsInstance(
+                frame, pygame.Surface, "Each frame should be instance of pygame.Surface"
+            )
 
 
 if __name__ == "__main__":
