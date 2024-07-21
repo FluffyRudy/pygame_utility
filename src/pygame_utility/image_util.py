@@ -39,6 +39,7 @@ def load_state_frames(
 ) -> dict[str, List[pygame.Surface]]:
     """
     Load multiple frames (images) from subdirectories of the given path and return them as a dictionary of Lists of pygame Surfaces.
+    The images within each subdirectory are loaded in alphabetical order.
 
     Args:
         path (str): Path of the directory containing subdirectories of image files.
@@ -57,9 +58,11 @@ def load_state_frames(
         frame_name = subdir.name
         frames[frame_name] = []
         for file in subdir.iterdir():
-            if file.suffix == ".png":
-                surface = load_image(Path(path) / file, scale_ratio, scale_size)
-                frames[frame_name].append(surface)
+            if not file.suffix == ".png":
+                print(f"WARNING: {file.name} is not .png file")
+                continue
+            surface = load_image(file, scale_ratio, scale_size)
+            frames[frame_name].append(surface)
 
     return frames
 
@@ -71,6 +74,7 @@ def load_frames(
 ) -> List[pygame.Surface]:
     """
     Load frames (images) from the given path and return them as a List of pygame Surfaces.
+    The images within directory are loaded in alphabetical order.
 
     Args:
         path (str): Path of the directory containing image files.
@@ -86,11 +90,11 @@ def load_frames(
         return frames
 
     for file in sorted(Path(path).iterdir()):
-        image_path: Path = Path(path) / file
+        image_path: Path = file
         if not file.suffix == ".png":
-            print(f"WARNING: {image_path.name} is not .png file")
+            print(f"WARNING: {file.name} is not .png file")
             continue
-        surface = load_image(image_path, scale_ratio, scale_size)
+        surface = load_image(file, scale_ratio, scale_size)
         frames.append(surface)
 
     return frames
