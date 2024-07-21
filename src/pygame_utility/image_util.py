@@ -86,10 +86,10 @@ def load_frames(
         return frames
 
     for file in sorted(Path(path).iterdir()):
+        image_path: Path = Path(path) / file
         if not file.suffix == ".png":
-            print(f"WARNING: {image_path} is not .png file")
+            print(f"WARNING: {image_path.name} is not .png file")
             continue
-        image_path = Path(path) / file
         surface = load_image(image_path, scale_ratio, scale_size)
         frames.append(surface)
 
