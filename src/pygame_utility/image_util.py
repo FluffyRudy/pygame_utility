@@ -90,7 +90,6 @@ def load_frames(
         return frames
 
     for file in sorted(Path(path).iterdir()):
-        image_path: Path = file
         if not file.suffix == ".png":
             print(f"WARNING: {file.name} is not .png file")
             continue
