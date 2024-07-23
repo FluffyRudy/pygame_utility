@@ -1,9 +1,13 @@
-import pygame
-from pathlib import Path
-from typing import Optional, Union, Tuple, List
+# image_util Module
 
+The `image_util` module provides functions for easier loading images in Pygame from directory as list of frames of state based frames.
 
-def load_image(
+## Functions
+
+### `load_image`
+
+```python
+load_image(
     path: Union[str, Path],
     scale_ratio: Tuple[float, float] = (1.0, 1.0),
     scale_size: Optional[Tuple[float, float]] = None,
@@ -19,20 +23,10 @@ def load_image(
     Returns:
         pygame.Surface: The loaded and scaled image as a pygame Surface object.
     """
-    image = None
-    try:
-        image = pygame.image.load(str(path)).convert_alpha()
-        if scale_ratio:
-            image = pygame.transform.scale_by(image, scale_ratio)
-        elif scale_size:
-            image = pygame.transform.scale(image, scale_size)
-    except Exception as error:
-        print(error)
-    finally:
-        return image
+```
 
-
-def load_state_frames(
+```python
+load_state_frames(
     path: Union[str, Path],
     scale_ratio: Tuple[float, float] = (1.0, 1.0),
     scale_size: Optional[Tuple[float, float]] = None,
@@ -49,24 +43,9 @@ def load_state_frames(
     Returns:
         dict[str, List[pygame.Surface]]: A dictionary where keys are subdirectory names and values are Lists of loaded and scaled frames as pygame Surface objects.
     """
-    frames = {}
+```
 
-    if not Path(path).exists():
-        return frames
-
-    for subdir in sorted(Path(path).iterdir()):
-        frame_name = subdir.name
-        frames[frame_name] = []
-        for file in subdir.iterdir():
-            if not file.suffix == ".png":
-                print(f"WARNING: {file.name} is not .png file")
-                continue
-            surface = load_image(file, scale_ratio, scale_size)
-            frames[frame_name].append(surface)
-
-    return frames
-
-
+```python
 def load_frames(
     path: Union[str, Path],
     scale_ratio: Tuple[float, float] = (1.0, 1.0),
@@ -84,16 +63,4 @@ def load_frames(
     Returns:
         List[pygame.Surface]: A List of loaded and scaled frames as pygame Surface objects.
     """
-    frames = []
-
-    if not Path(path).exists():
-        return frames
-
-    for file in sorted(Path(path).iterdir()):
-        if not file.suffix == ".png":
-            print(f"WARNING: {file.name} is not .png file")
-            continue
-        surface = load_image(file, scale_ratio, scale_size)
-        frames.append(surface)
-
-    return frames
+```
