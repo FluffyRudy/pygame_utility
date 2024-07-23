@@ -23,10 +23,6 @@ build:
   tools:
     python: "3.12"
 
-# Ensure the build runs in a conda environment
-conda:
-  file: environment.yml
-
 # Use the default image for building docs
 image: latest
 
