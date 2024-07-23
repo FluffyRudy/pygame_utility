@@ -11,7 +11,7 @@ formats:
   - epub
 
 python:
-  version: 3.12
+  version: 3.12.3
   install:
     - requirements: requirements.txt
     - path: .
@@ -20,7 +20,7 @@ python:
 build:
   os: ubuntu-22.04
   tools:
-    python: "3.12"
+    python: "3.12.3"
 
 image: latest
 
