@@ -5,3 +5,4 @@ src
    :maxdepth: 4
 
    pygame_utility
+   utils
