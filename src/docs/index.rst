@@ -7,8 +7,7 @@ Welcome to pygame-utility's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   src/pygame_utility
-   src/utils
+   modules
 
 Indices and Tables
 ==================
