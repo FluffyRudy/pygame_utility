@@ -1,6 +1,7 @@
 import pygame
 from pathlib import Path
 from typing import Optional, Union, Tuple, List
+from src.utils.sortkeys import get_numeric_sort_key
 
 
 def load_image(
@@ -56,7 +57,7 @@ def load_state_frames(
     if not Path(path).exists():
         return frames
 
-    for subdir in sorted(Path(path).iterdir()):
+    for subdir in sorted(Path(path).iterdir(), key=get_numeric_sort_key):
         if subdir.is_dir():
             frame_name = subdir.name
             frames[frame_name] = []
@@ -93,7 +94,7 @@ def load_frames(
     if not Path(path).exists():
         return frames
 
-    for file in sorted(Path(path).iterdir()):
+    for file in sorted(Path(path).iterdir(), key=get_numeric_sort_key):
         if file.suffix != ".png":
             print(f"WARNING: {file.name} is not a .png file")
             continue
