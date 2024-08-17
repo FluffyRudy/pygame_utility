@@ -1,20 +1,18 @@
-.. Pygame Utility documentation master file, created by
-   sphinx-quickstart on Tue Jul 23 12:38:34 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to pygame-utility's documentation!
+==========================================
 
-Pygame Utility documentation
-============================
+`pygame-utility` is a package that provides simple utility functions for Pygame, including image processing and numeric sorting.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   src/pygame_utility
+   src/utils
 
-Indices and tables
+Indices and Tables
 ==================
 
-* :ref `genindex`
-* :ref `modindex`
-* :ref `search`
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
