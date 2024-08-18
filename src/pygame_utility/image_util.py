@@ -1,7 +1,7 @@
 import pygame
 from pathlib import Path
 from typing import Optional, Union, Tuple, List
-from utils.sortkeys import get_numeric_sort_key
+from .sortkeys import get_numeric_sort_key
 
 
 def load_image(
