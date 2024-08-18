@@ -28,7 +28,7 @@ def get_numeric_sort_key(filepath: Union[Path, str]) -> Tuple[float, str]:
     Example with no numeric part:
         >>> files = ['fileA.txt', 'fileB.txt', 'file.txt']
         >>> sorted(files, key=get_numeric_sort_key)
-        ['fileA.txt', 'fileB.txt', 'file.txt']
+        ['file.txt', 'fileA.txt', 'fileB.txt']
     """
     if isinstance(filepath, Path):
         filepath = str(filepath)

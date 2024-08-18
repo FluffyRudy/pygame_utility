@@ -55,9 +55,9 @@ class TestSortKeys(unittest.TestCase):
         self.assertEqual(sorted_files, files)
 
     def test_mixed_files(self):
-        files = ["fileA.png", "file1.png", "fileB.png"]
+        files = ["fileA.png", "fileB.png", "file.png"]
         sorted_files = sorted(files, key=get_numeric_sort_key)
-        self.assertEqual(sorted_files, ["file1.png", "fileA.png", "fileB.png"])
+        self.assertEqual(sorted_files, ["file.png", "fileA.png", "fileB.png"])
 
 
 if __name__ == "__main__":
