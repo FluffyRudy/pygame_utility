@@ -25,7 +25,6 @@ packaging==24.1
 pip-tools==7.4.1
 pkginfo==1.10.0
 pycparser==2.22
-pygame==2.6.0
 Pygments==2.18.0
 pyproject_hooks==1.1.0
 PyTMX==3.32
