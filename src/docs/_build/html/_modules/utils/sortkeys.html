@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>utils.sortkeys &mdash; Pygame Utility 0.2.0 documentation</title>
+  <title>utils.sortkeys &mdash; Pygame Utility 0.3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../../_static/dark_mode_css/general.css?v=c0a7eb24" />
@@ -16,7 +16,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=938c9ccc"></script>
+        <script src="../../_static/documentation_options.js?v=4621528c"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
@@ -94,12 +94,20 @@
 <span class="sd">                            and the original file path. The tuple is used for sorting files primarily by</span>
 <span class="sd">                            the numeric part and secondarily by the file path if needed.</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        &gt;&gt;&gt; sort_files(&#39;file10.txt&#39;)</span>
-<span class="sd">        (10, &#39;file10.txt&#39;)</span>
+<span class="sd">    Example without callback:</span>
+<span class="sd">        &gt;&gt;&gt; files = [&#39;file10.txt&#39;, &#39;file2.txt&#39;, &#39;file1.txt&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; sorted(files)</span>
+<span class="sd">        [&#39;file1.txt&#39;, &#39;file10.txt&#39;, &#39;file2.txt&#39;]</span>
 
-<span class="sd">        &gt;&gt;&gt; sort_files(&#39;file.txt&#39;)</span>
-<span class="sd">        (inf, &#39;file.txt&#39;)</span>
+<span class="sd">    Example with `get_numeric_sort_key` callback:</span>
+<span class="sd">        &gt;&gt;&gt; files = [&#39;file10.txt&#39;, &#39;file2.txt&#39;, &#39;file1.txt&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; sorted(files, key=get_numeric_sort_key)</span>
+<span class="sd">        [&#39;file1.txt&#39;, &#39;file2.txt&#39;, &#39;file10.txt&#39;]</span>
+
+<span class="sd">    Example with no numeric part:</span>
+<span class="sd">        &gt;&gt;&gt; files = [&#39;fileA.txt&#39;, &#39;fileB.txt&#39;, &#39;file.txt&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; sorted(files, key=get_numeric_sort_key)</span>
+<span class="sd">        [&#39;fileA.txt&#39;, &#39;fileB.txt&#39;, &#39;file.txt&#39;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
