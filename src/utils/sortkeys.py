@@ -15,12 +15,20 @@ def get_numeric_sort_key(filepath: Union[Path, str]) -> Tuple[float, str]:
                             and the original file path. The tuple is used for sorting files primarily by
                             the numeric part and secondarily by the file path if needed.
 
-    Example:
-        >>> sort_files('file10.txt')
-        (10, 'file10.txt')
+    Example without callback:
+        >>> files = ['file10.txt', 'file2.txt', 'file1.txt']
+        >>> sorted(files)
+        ['file1.txt', 'file10.txt', 'file2.txt']
 
-        >>> sort_files('file.txt')
-        (inf, 'file.txt')
+    Example with `get_numeric_sort_key` callback:
+        >>> files = ['file10.txt', 'file2.txt', 'file1.txt']
+        >>> sorted(files, key=get_numeric_sort_key)
+        ['file1.txt', 'file2.txt', 'file10.txt']
+
+    Example with no numeric part:
+        >>> files = ['fileA.txt', 'fileB.txt', 'file.txt']
+        >>> sorted(files, key=get_numeric_sort_key)
+        ['fileA.txt', 'fileB.txt', 'file.txt']
     """
     if isinstance(filepath, Path):
         filepath = str(filepath)

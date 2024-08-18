@@ -1,6 +1,11 @@
 
 # Changelog
 
+## [0.3.0] - 2024-08-18
+### Added
+
+- **`MapLoader` Class**: Introduced a new class for managing and loading TMX map files. This class includes functionality for retrieving layer data and handling TiledTileLayer, TiledObjectGroup and TiledImageLayer  types.
+
 ## [0.2.0] - 2024-08-17
 
 ### Changed
