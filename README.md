@@ -11,6 +11,7 @@
 ## Features
 
 - Utility functions for image loading and processing.
+- Utility class for loading map from tiled map editor.
 - Sorting utilities for managing file names with numeric parts. Images are sorted numerically based on any numeric values in their filenames, rather than lexicographically.
 
 ## Installation
