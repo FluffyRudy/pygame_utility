@@ -13,7 +13,9 @@ def upload_package():
         build_code = subprocess.run(
             ["python3", "-m", "setup.py", "sdist", "bdist_wheel"]
         )
-        upload_code = subprocess.run(["twine", "upload", "dist/*"], check=True)
+        upload_code = subprocess.run(
+            ["twine", "upload", "dist/*"], check=True, capture_output=True, text=True
+        )
         if upload_code != 0:
             print("Unknown error: failed to upload to pypi")
         print(upload_code)
