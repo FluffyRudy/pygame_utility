@@ -93,9 +93,6 @@ class MapLoader:
         """
         Yield TileLayer data as a 2D grid.
 
-        Note:
-            Object layer data are not included in the grid.
-
         Returns:
             List[List[int]]: Grid representing the map with tile GIDs.
         """
