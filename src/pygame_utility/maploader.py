@@ -110,6 +110,25 @@ class MapLoader:
 
         return tiles
 
+    def get_image_by_gid(self, gid: int) -> Optional[Surface]:
+        """
+        Get an image by its GID.
+
+        Args:
+            gid (int): The global ID of the tile.
+
+        Returns:
+            Optional[Surface]: The image associated with the GID, or None if not found.
+        """
+        image = None
+        try:
+            image = self.__map_data.get_tile_image_by_gid(gid)
+        except TypeError:
+            print(f"GID must be an integer. got {gid}")
+        except ValueError:
+            pass  # Return None if the image for the GID doesn't exist
+        return image
+
     def ok(self) -> None:
         """Clean up map data."""
         self.__map_data = None
@@ -159,22 +178,3 @@ class MapLoader:
             else:
                 layer_data.append((x, y, surface))
         return layer_data
-
-    def get_image_by_gid(self, gid: int) -> Optional[Surface]:
-        """
-        Get an image by its GID.
-
-        Args:
-            gid (int): The global ID of the tile.
-
-        Returns:
-            Optional[Surface]: The image associated with the GID, or None if not found.
-        """
-        image = None
-        try:
-            image = self.__map_data.get_tile_image_by_gid(gid)
-        except TypeError:
-            print(f"GID must be an integer. got {gid}")
-        except ValueError:
-            pass  # Return None if the image for the GID doesn't exist
-        return image
