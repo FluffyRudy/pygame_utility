@@ -1,6 +1,7 @@
 .env/
 build/
 dist/
+devtest/
 *.egg-info/
 __pycache__/
 tree.txt

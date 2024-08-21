@@ -6,19 +6,6 @@ from pygame import Surface
 from pathlib import Path
 
 
-class MapLoaderError(Exception):
-    """Custom exception for MapLoader errors."""
-
-    def __init__(self, message: str):
-        """
-        Initialize the exception with a message.
-
-        Args:
-            message (str): Error message.
-        """
-        super().__init__(message)
-
-
 class MapLoader:
     """Class for loading and managing TMX maps."""
 
@@ -31,15 +18,11 @@ class MapLoader:
 
         Raises:
             FileNotFoundError: If the file does not exist.
-            MapLoaderError: If the file is not a .tmx file.
         """
         path = Path(filepath)
         if not path.exists():
             message = f"File not found at {path.absolute()}"
             raise FileNotFoundError(message)
-        elif path.suffix != ".tmx":
-            message = f"Invalid file type: {path.suffix}. Expected a .tmx file."
-            raise MapLoaderError(message)
 
         self.__map_data = load_pygame(str(filepath))
         self.map_props = {
@@ -106,9 +89,30 @@ class MapLoader:
             data[layername] = self.get_layer_data_by_name(layername, only_coord=False)
         return data
 
+    def get_map_grid(self) -> List[List[int]]:
+        """
+        Yield TileLayer data as a 2D grid.
+
+        Note:
+            Object layer data are not included in the grid.
+
+        Returns:
+            List[List[int]]: Grid representing the map with tile GIDs.
+        """
+        tiles = [
+            [0 for _ in range(self.map_props.get("tile_counts")[0])]
+            for _ in range(self.map_props.get("tile_counts")[1])
+        ]
+        for layer in self.__map_data.visible_layers:
+            if isinstance(layer, TiledTileLayer):
+                for x, y, gid in layer.iter_data():
+                    tiles[y][x] = gid
+
+        return tiles
+
     def ok(self) -> None:
         """Clean up map data."""
-        del self.map_data
+        self.__map_data = None
 
     def __get_tile_layer_data(
         self, layer: TiledTileLayer, only_coord: bool
@@ -127,7 +131,7 @@ class MapLoader:
         w, h = self.map_props["tile_size"]
         for tile_data in layer:
             x, y, gid = tile_data
-            surface = self.__get_image_by_gid(gid)
+            surface = self.get_image_by_gid(gid)
             if only_coord:
                 layer_data.append((x * w, y * h, None))
             elif surface is not None:
@@ -156,7 +160,7 @@ class MapLoader:
                 layer_data.append((x, y, surface))
         return layer_data
 
-    def __get_image_by_gid(self, gid: int) -> Optional[Surface]:
+    def get_image_by_gid(self, gid: int) -> Optional[Surface]:
         """
         Get an image by its GID.
 
@@ -170,7 +174,7 @@ class MapLoader:
         try:
             image = self.__map_data.get_tile_image_by_gid(gid)
         except TypeError:
-            print("GID must be an integer.")
+            print(f"GID must be an integer. got {gid}")
         except ValueError:
             pass  # Return None if the image for the GID doesn't exist
         return image
