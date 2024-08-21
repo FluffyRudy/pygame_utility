@@ -10,9 +10,7 @@ def upload_package():
     try:
         clean_build()
         print("Uploading to pypi....")
-        build_code = subprocess.run(
-            ["python3", "-m", "setup.py", "sdist", "bdist_wheel"]
-        )
+        build_code = subprocess.run(["python3", "-m", "setup", "sdist", "bdist_wheel"])
         upload_code = subprocess.run(
             ["twine", "upload", "dist/*"], check=True, capture_output=True, text=True
         )
