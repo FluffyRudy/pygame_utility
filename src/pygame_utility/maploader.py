@@ -48,7 +48,7 @@ class MapLoader:
 
     def get_layer_data_by_name(
         self, name: str, only_coord: bool
-    ) -> List[Tuple[int, int, Optional[Surface]]]:
+    ) -> List[Tuple[int, int, Optional[Surface], int]]:
         """
         Get data for a specific layer by name.
 
@@ -57,7 +57,7 @@ class MapLoader:
             only_coord (bool): If True, return only coordinates; otherwise, include images.
 
         Returns:
-            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, and the image (or None).
+            List[Tuple[int, int, Optional[Surface], int]]: List of tuples containing x, y, the image (or None), and the image id.
 
         Raises:
             ValueError: If the layer does not exist.
@@ -73,16 +73,16 @@ class MapLoader:
         elif isinstance(layer, TiledObjectGroup):
             return self.__get_tiled_object_layer(layer, only_coord)
         elif isinstance(layer, TiledImageLayer):
-            return [(0, 0, layer.image)]
+            return [(0, 0, layer.image, None)]
 
         return []
 
-    def get_map_data(self) -> Dict[str, List[Tuple[int, int, Optional[Surface]]]]:
+    def get_map_data(self) -> Dict[str, List[Tuple[int, int, Optional[Surface], int]]]:
         """
         Get data for all layers in the map.
 
         Returns:
-            Dict[str, List[Tuple[int, int, Optional[Surface]]]]: Dictionary with layer names as keys and layer data x, y, surface as values.
+            Dict[str, List[Tuple[int, int, Optional[Surface], int]]]: Dictionary with layer names as keys and layer data (x, y, surface, id) as values.
         """
         data = {}
         for layername in self.all_layernames:
@@ -116,7 +116,7 @@ class MapLoader:
 
     def __get_tile_layer_data(
         self, layer: TiledTileLayer, only_coord: bool
-    ) -> List[Tuple[int, int, Optional[Surface]], int]:
+    ) -> List[Tuple[int, int, Optional[Surface], int]]:
         """
         Get data for a TiledTileLayer.
 
@@ -125,7 +125,7 @@ class MapLoader:
             only_coord (bool): If True, return only coordinates; otherwise, include images.
 
         Returns:
-            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, image (or None) and image id.
+            List[Tuple[int, int, Optional[Surface], int]]: List of tuples containing x, y, image (or None), and image id.
         """
         layer_data = []
         w, h = self.map_props["tile_size"]
@@ -140,7 +140,7 @@ class MapLoader:
 
     def __get_tiled_object_layer(
         self, layer: TiledObjectGroup, only_coord: bool
-    ) -> List[Tuple[int, int, Optional[Surface]], int]:
+    ) -> List[Tuple[int, int, Optional[Surface], int]]:
         """
         Get data for a TiledObjectGroup.
 
@@ -149,7 +149,7 @@ class MapLoader:
             only_coord (bool): If True, return only coordinates; otherwise, include images.
 
         Returns:
-            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, image (or None) and image id.
+            List[Tuple[int, int, Optional[Surface], int]]: List of tuples containing x, y, image (or None), and image id.
         """
         layer_data = []
         for data in layer:
