@@ -1,6 +1,6 @@
 from typing import Union, Optional, List, Tuple, Dict
 from pytmx import load_pygame
-from pytmx import TiledTileLayer, TiledObjectGroup, TiledImageLayer
+from pytmx import TiledTileLayer, TiledObjectGroup, TiledImageLayer, TiledObject
 from pytmx.pytmx import TiledGroupLayer
 from pygame import Surface
 from pathlib import Path
@@ -82,7 +82,7 @@ class MapLoader:
         Get data for all layers in the map.
 
         Returns:
-            Dict[str, List[Tuple[int, int, Optional[Surface]]]]: Dictionary with layer names as keys and layer data as values.
+            Dict[str, List[Tuple[int, int, Optional[Surface]]]]: Dictionary with layer names as keys and layer data x, y, surface as values.
         """
         data = {}
         for layername in self.all_layernames:
@@ -92,6 +92,9 @@ class MapLoader:
     def get_map_grid(self) -> List[List[int]]:
         """
         Yield TileLayer data as a 2D grid.
+
+        Note:
+            Object layer data are not included in the grid.
 
         Returns:
             List[List[int]]: Grid representing the map with tile GIDs.
@@ -106,6 +109,57 @@ class MapLoader:
                     tiles[y][x] = gid
 
         return tiles
+
+    def ok(self) -> None:
+        """Clean up map data."""
+        self.__map_data = None
+
+    def __get_tile_layer_data(
+        self, layer: TiledTileLayer, only_coord: bool
+    ) -> List[Tuple[int, int, Optional[Surface]], int]:
+        """
+        Get data for a TiledTileLayer.
+
+        Args:
+            layer (TiledTileLayer): The tile layer.
+            only_coord (bool): If True, return only coordinates; otherwise, include images.
+
+        Returns:
+            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, image (or None) and image id.
+        """
+        layer_data = []
+        w, h = self.map_props["tile_size"]
+        for tile_data in layer:
+            x, y, gid = tile_data
+            surface = self.get_image_by_gid(gid)
+            if only_coord:
+                layer_data.append((x * w, y * h, None, gid))
+            elif surface is not None:
+                layer_data.append((x * w, y * h, surface, gid))
+        return layer_data
+
+    def __get_tiled_object_layer(
+        self, layer: TiledObjectGroup, only_coord: bool
+    ) -> List[Tuple[int, int, Optional[Surface]], int]:
+        """
+        Get data for a TiledObjectGroup.
+
+        Args:
+            layer (TiledObjectGroup): The object group layer.
+            only_coord (bool): If True, return only coordinates; otherwise, include images.
+
+        Returns:
+            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, image (or None) and image id.
+        """
+        layer_data = []
+        for data in layer:
+            data: TiledObject = data
+            x, y, surface, _id = data.x, data.y, data.image, data.id
+            if only_coord:
+                layer_data.append((x, y, None, _id))
+            else:
+                layer_data.append((x, y, surface, _id))
+        return layer_data
 
     def get_image_by_gid(self, gid: int) -> Optional[Surface]:
         """
@@ -125,53 +179,3 @@ class MapLoader:
         except ValueError:
             pass  # Return None if the image for the GID doesn't exist
         return image
-
-    def ok(self) -> None:
-        """Clean up map data."""
-        self.__map_data = None
-
-    def __get_tile_layer_data(
-        self, layer: TiledTileLayer, only_coord: bool
-    ) -> List[Tuple[int, int, Optional[Surface]]]:
-        """
-        Get data for a TiledTileLayer.
-
-        Args:
-            layer (TiledTileLayer): The tile layer.
-            only_coord (bool): If True, return only coordinates; otherwise, include images.
-
-        Returns:
-            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, and the image (or None).
-        """
-        layer_data = []
-        w, h = self.map_props["tile_size"]
-        for tile_data in layer:
-            x, y, gid = tile_data
-            surface = self.get_image_by_gid(gid)
-            if only_coord:
-                layer_data.append((x * w, y * h, None))
-            elif surface is not None:
-                layer_data.append((x * w, y * h, surface))
-        return layer_data
-
-    def __get_tiled_object_layer(
-        self, layer: TiledObjectGroup, only_coord: bool
-    ) -> List[Tuple[int, int, Optional[Surface]]]:
-        """
-        Get data for a TiledObjectGroup.
-
-        Args:
-            layer (TiledObjectGroup): The object group layer.
-            only_coord (bool): If True, return only coordinates; otherwise, include images.
-
-        Returns:
-            List[Tuple[int, int, Optional[Surface]]]: List of tuples containing x, y, and the image (or None).
-        """
-        layer_data = []
-        for data in layer:
-            x, y, surface = data.x, data.y, data.image
-            if only_coord:
-                layer_data.append((x, y, None))
-            else:
-                layer_data.append((x, y, surface))
-        return layer_data
