@@ -24,11 +24,6 @@ def get_numeric_sort_key(filepath: Union[Path, str]) -> Tuple[float, str]:
         >>> files = ['file10.txt', 'file2.txt', 'file1.txt']
         >>> sorted(files, key=get_numeric_sort_key)
         ['file1.txt', 'file2.txt', 'file10.txt']
-
-    Example with no numeric part:
-        >>> files = ['fileA.txt', 'fileB.txt', 'file.txt']
-        >>> sorted(files, key=get_numeric_sort_key)
-        ['file.txt', 'fileA.txt', 'fileB.txt']
     """
     if isinstance(filepath, Path):
         filepath = str(filepath)
